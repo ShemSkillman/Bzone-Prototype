@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Look : MonoBehaviour
 {
-
-    [SerializeField] float turnSpeed = 5f;
+    [SerializeField] float verticalTurnSpeed = 5f;
+    [SerializeField] float horizontalTurnSpeed = 5f;
     [SerializeField] float minAngle = -30;
     [SerializeField] float maxAngle = 60;
 
@@ -19,12 +19,14 @@ public class Look : MonoBehaviour
     private void FixedUpdate()
     {
         float x = Mathf.Clamp(Input.GetAxisRaw("Mouse X"), -1, 1);
-        rb.AddTorque(Vector3.up * x * turnSpeed);
+        rb.AddTorque(Vector3.up * x * horizontalTurnSpeed);
+        print(Input.GetAxisRaw("Mouse Y"));
 
-        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1);
+        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1) * 0.35f;
+        print(y);      
 
         var right = new Vector3(transform.right.x, 0f, transform.right.z);
-        rb.AddTorque(right * y * turnSpeed * -1);
+        rb.AddTorque(right * y * verticalTurnSpeed * -1);
         
 
     }

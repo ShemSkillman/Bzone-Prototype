@@ -25,8 +25,5 @@ public class Movement : MonoBehaviour
 
         Vector3 horizontal = new Vector3(transform.right.x, 0f, transform.right.z);
         rb.AddForce(horizontal * Input.GetAxis("Horizontal") * speed, ForceMode.Force);
-
-
-        print(rb.velocity.magnitude);
     }
 }

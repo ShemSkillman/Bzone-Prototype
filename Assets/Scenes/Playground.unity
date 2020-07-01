@@ -1721,6 +1721,16 @@ PrefabInstance:
       propertyPath: targetHeight
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1322677238930199083, guid: 847b3cdf59b36bd489b92141a4f3ac01,
+        type: 3}
+      propertyPath: verticalTurnSpeed
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1322677238930199083, guid: 847b3cdf59b36bd489b92141a4f3ac01,
+        type: 3}
+      propertyPath: horizontalTurnSpeed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 5035601908543118709, guid: 847b3cdf59b36bd489b92141a4f3ac01,
         type: 3}
       propertyPath: m_LocalPosition.x
