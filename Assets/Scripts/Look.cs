@@ -20,14 +20,10 @@ public class Look : MonoBehaviour
     {
         float x = Mathf.Clamp(Input.GetAxisRaw("Mouse X"), -1, 1);
         rb.AddTorque(Vector3.up * x * horizontalTurnSpeed);
-        print(Input.GetAxisRaw("Mouse Y"));
 
-        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1) * 0.35f;
-        print(y);      
+        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1) * 0.35f;     
 
         var right = new Vector3(transform.right.x, 0f, transform.right.z);
         rb.AddTorque(right * y * verticalTurnSpeed * -1);
-        
-
     }
 }

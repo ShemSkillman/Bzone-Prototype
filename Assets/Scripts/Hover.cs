@@ -8,6 +8,11 @@ public class Hover : MonoBehaviour
     [SerializeField] float targetHeight = 2f;
     [SerializeField] float stabalizeForce = 100f;
 
+    [SerializeField] Transform frontHoverPoint;
+    [SerializeField] Transform backHoverPoint;
+    [SerializeField] Transform leftHoverPoint;
+    [SerializeField] Transform rightHoverPoint;
+
     Rigidbody rb;
     LayerMask terrainLayer;
 
@@ -22,25 +27,47 @@ public class Hover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        bool isHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer);
+        Vector3[] hoverPoints = {
+            frontHoverPoint.position,
+            backHoverPoint.position,
+            leftHoverPoint.position,
+            rightHoverPoint.position};
 
-        if (!isHit) return;
-        
-        Stabalize(hit.normal);
+        RaycastHit closestHit = new RaycastHit();
+        closestHit.distance = Mathf.Infinity;
 
-        rb.AddForce(maxHoverThrust * (1f - (hit.distance / targetHeight)) * Vector3.up, ForceMode.Acceleration);
+        foreach (Vector3 point in hoverPoints)
+        {
+            bool isHit = Physics.Raycast(point, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer);
 
+            if (!isHit) continue;
+
+            if (hit.distance < closestHit.distance)
+            {
+                closestHit = hit;
+            }
+        }
+
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit1, targetHeight, terrainLayer))
+        {
+            Stabalize(hit1.normal);
+        }
+        else
+        {
+            Stabalize(Vector3.up);
+        }
+
+        if (closestHit.distance == Mathf.Infinity) return;
+
+        rb.AddForce(maxHoverThrust * (1f - (closestHit.distance / targetHeight)) * Vector3.up, ForceMode.Acceleration);
     }
 
     private void Stabalize(Vector3 groundNormal)
     {
-
         var cross = Vector3.Cross(transform.up, groundNormal);
 
         var turnDir = transform.InverseTransformDirection(cross);
 
-
         rb.AddTorque(transform.forward * turnDir.z * stabalizeForce);
-
     }
 }
