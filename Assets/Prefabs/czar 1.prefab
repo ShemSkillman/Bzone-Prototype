@@ -74,6 +74,36 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &839402046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 839402047}
+  m_Layer: 0
+  m_Name: Center Hover Point
+  m_TagString: Untagged
+  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &839402047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839402046}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -1.94, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6750470094730473829}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -423,6 +453,7 @@ Transform:
   - {fileID: 3886822963029098465}
   - {fileID: 4913737996154916006}
   - {fileID: 3021680534154160427}
+  - {fileID: 839402047}
   m_Father: {fileID: 5035601908543118709}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -998,13 +1029,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4db2ab6fe59f447b2aaa3a3562e59a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHoverThrust: 200
-  targetHeight: 4
+  maxHoverThrust: 30
+  targetHeight: 4.5
   stabalizeForce: 60
   frontHoverPoint: {fileID: 5746971087436675519}
   backHoverPoint: {fileID: 3021680534154160427}
   leftHoverPoint: {fileID: 3886822963029098465}
   rightHoverPoint: {fileID: 4913737996154916006}
+  centerHoverPoint: {fileID: 839402047}
 --- !u!114 &5002236533289037427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1017,7 +1049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5462329cdbc9bc04c90170182ec7c7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 40
+  speed: 20
 --- !u!114 &1322677238930199083
 MonoBehaviour:
   m_ObjectHideFlags: 0

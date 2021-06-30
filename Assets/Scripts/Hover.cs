@@ -12,6 +12,7 @@ public class Hover : MonoBehaviour
     [SerializeField] Transform backHoverPoint;
     [SerializeField] Transform leftHoverPoint;
     [SerializeField] Transform rightHoverPoint;
+    [SerializeField] Transform centerHoverPoint;
 
     Rigidbody rb;
     LayerMask terrainLayer;
@@ -31,7 +32,8 @@ public class Hover : MonoBehaviour
             frontHoverPoint.position,
             backHoverPoint.position,
             leftHoverPoint.position,
-            rightHoverPoint.position};
+            rightHoverPoint.position,
+            centerHoverPoint.position};
 
         RaycastHit closestHit = new RaycastHit();
         closestHit.distance = Mathf.Infinity;
