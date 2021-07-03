@@ -913,6 +913,7 @@ GameObject:
   - component: {fileID: 1165611939156514230}
   - component: {fileID: 5002236533289037427}
   - component: {fileID: 1322677238930199083}
+  - component: {fileID: 1516613199}
   m_Layer: 0
   m_Name: czar 1
   m_TagString: Untagged
@@ -1032,11 +1033,12 @@ MonoBehaviour:
   maxHoverThrust: 30
   targetHeight: 4.5
   stabalizeForce: 60
-  frontHoverPoint: {fileID: 5746971087436675519}
-  backHoverPoint: {fileID: 3021680534154160427}
-  leftHoverPoint: {fileID: 3886822963029098465}
-  rightHoverPoint: {fileID: 4913737996154916006}
-  centerHoverPoint: {fileID: 839402047}
+  hoverPoints:
+  - {fileID: 5746971087436675519}
+  - {fileID: 3886822963029098465}
+  - {fileID: 4913737996154916006}
+  - {fileID: 3021680534154160427}
+  - {fileID: 839402047}
 --- !u!114 &5002236533289037427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1068,18 @@ MonoBehaviour:
   horizontalTurnSpeed: 200
   minAngle: -30
   maxAngle: 30
+--- !u!114 &1516613199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338789202827882342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4ca238efc4e7f04f9dd4dbc6ddf84ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9014759969176729167
 GameObject:
   m_ObjectHideFlags: 0
