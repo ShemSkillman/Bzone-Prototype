@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Debug;
+using DebugHelper;
 
 public class Hover : MonoBehaviour
 {
@@ -24,7 +24,7 @@ public class Hover : MonoBehaviour
 
         rb.centerOfMass = new Vector3(0, 0, 0);
 
-        terrainLayer = LayerMask.GetMask("Terrain");       
+        terrainLayer = LayerMask.GetMask("Terrain");
     }
 
     private void FixedUpdate()

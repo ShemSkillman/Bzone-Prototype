@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Debug
+namespace DebugHelper
 {
     public abstract class GizmoObject
     {
