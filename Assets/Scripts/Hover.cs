@@ -12,14 +12,14 @@ public class Hover : MonoBehaviour
     [SerializeField] Transform[] hoverPoints;
 
     GizmoHelper gizmoHelper;
-    MeshCollider collider;
+    MeshCollider meshCollider;
     Rigidbody rb;
     LayerMask terrainLayer;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        collider = GetComponent<MeshCollider>();
+        meshCollider = GetComponent<MeshCollider>();
         gizmoHelper = GetComponent<GizmoHelper>();
 
         rb.centerOfMass = new Vector3(0, 0, 0);
@@ -31,24 +31,28 @@ public class Hover : MonoBehaviour
     {
         gizmoHelper.Clear();
 
-        float lowestPointY = collider.bounds.min.y;
+        ApplyHoverForce();
+        ApplyStabalization();
+    }
+
+    private void ApplyHoverForce()
+    {
+        float lowestPointY = meshCollider.bounds.min.y;
 
         RaycastHit closestHit = new RaycastHit();
         closestHit.distance = Mathf.Infinity;
 
         foreach (Transform point in hoverPoints)
         {
-            float pointOffsetY = point.position.y - lowestPointY;
+            Vector3 pos = new Vector3(point.position.x, lowestPointY, point.position.z);
 
-            bool isHit = Physics.Raycast(point.position, Vector3.down, out RaycastHit hit, targetHeight + pointOffsetY, terrainLayer);
+            bool isHit = Physics.Raycast(pos, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer);
 
             if (!isHit) continue;
 
             gizmoHelper.Colour = Color.white;
             gizmoHelper.DrawLine(point.position, hit.point);
             gizmoHelper.DrawSphere(hit.point, 1f);
-
-            hit.distance -= pointOffsetY;
 
             if (hit.distance < closestHit.distance)
             {
@@ -62,17 +66,20 @@ public class Hover : MonoBehaviour
 
             gizmoHelper.Colour = Color.green;
             gizmoHelper.DrawSphere(closestHit.point, 1.1f);
-        }            
+        }
+    }
 
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit1, targetHeight, terrainLayer))
+    private void ApplyStabalization()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer))
         {
-            Stabalize(hit1.normal);
+            Stabalize(hit.normal);
         }
         else
         {
             Stabalize(Vector3.up);
         }
-    }
+    }    
 
     private void Stabalize(Vector3 groundNormal)
     {

@@ -486,6 +486,11 @@ PrefabInstance:
       propertyPath: speed
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 5002236533289037427, guid: 1fbd776f4b788614e82d9acff67ec6af,
+        type: 3}
+      propertyPath: targetHeight
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5035601908543118709, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}
       propertyPath: m_RootOrder

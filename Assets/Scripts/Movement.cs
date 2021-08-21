@@ -5,6 +5,8 @@ using UnityEngine;
 public class Movement : MonoBehaviour
 {
     [SerializeField] float speed = 10f;
+    [SerializeField] float terrianDetectionRange = 30f;
+    [SerializeField] float targetHeight = 2f;
 
     Rigidbody rb;
     MeshCollider meshCollider;
@@ -19,42 +21,38 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 lowestPointY = meshCollider.bounds.min;
+        Vector3 lowestPoint = meshCollider.bounds.min;
+        Vector3 start = new Vector3(transform.position.x, lowestPoint.y, transform.position.z);
 
-        Vector3 start = new Vector3(transform.position.x, lowestPointY.y, transform.position.z);
+        Vector3 moveForce = GetMoveForce();
 
-        //Vector3 dir = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        Debug.DrawLine(start, start + (moveForce * terrianDetectionRange), Color.red);
 
-        Vector3 forwardDir = new Vector3(transform.forward.x, 0, transform.forward.z);
-        Vector3 rightDir = new Vector3(transform.right.x, 0, transform.right.z);
+        bool isHit = Physics.Raycast(start, moveForce, out RaycastHit hit, terrianDetectionRange, terrainLayer);
 
-        Vector3 dir = (forwardDir * Input.GetAxis("Vertical")) + (rightDir * Input.GetAxis("Horizontal"));
-
-        Debug.DrawLine(start, start + dir * 30f, Color.red);
-
-        bool isHit = Physics.Raycast(start, dir, out RaycastHit hit, 30f, terrainLayer);
-
-        if (isHit && dir.magnitude > 0)
+        if (isHit)
         {
-            Vector3 target = hit.point + (Vector3.up * 3f);
+            Vector3 target = hit.point + (Vector3.up * targetHeight);
 
-            Vector3 moveDir = target - start;
+            Vector3 targetDir = target - start;
 
-            rb.AddForce(moveDir.normalized * speed, ForceMode.Force);
+            rb.AddForce(targetDir.normalized * speed, ForceMode.Force);
         }
         else
         {
-            Move();
+            rb.AddForce(moveForce * speed, ForceMode.Force);
         }
         
     }
 
-    private void Move()
+    private Vector3 GetMoveForce()
     {
         Vector3 verticalDir = new Vector3(transform.forward.x, 0f, transform.forward.z);
-        rb.AddForce(verticalDir * Input.GetAxis("Vertical") * speed, ForceMode.Force);
+        Vector3 horizontalDir = new Vector3(transform.right.x, 0f, transform.right.z);
 
-        Vector3 horizontal = new Vector3(transform.right.x, 0f, transform.right.z);
-        rb.AddForce(horizontal * Input.GetAxis("Horizontal") * speed, ForceMode.Force);
+        Vector3 verticalForce = verticalDir * Input.GetAxis("Vertical");
+        Vector3 horizontalForce = horizontalDir * Input.GetAxis("Horizontal");
+
+        return verticalForce + horizontalForce;
     }
 }
