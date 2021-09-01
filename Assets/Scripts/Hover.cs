@@ -9,22 +9,30 @@ public class Hover : MonoBehaviour
     [SerializeField] float targetHeight = 2f;
     [SerializeField] float stabalizeForce = 100f;
 
-    [SerializeField] Transform[] hoverPoints;
+    [SerializeField] int divisionCount = 4;
+
+    [SerializeField] Vector3 hoverSize;
+
+    HoverPoint bestHoverPoint;
+    HoverPoint [,] points;
+
+    [SerializeField] HoverPoint hoverPointPrefab;
 
     GizmoHelper gizmoHelper;
-    MeshCollider meshCollider;
     Rigidbody rb;
-    LayerMask terrainLayer;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        meshCollider = GetComponent<MeshCollider>();
-        gizmoHelper = GetComponent<GizmoHelper>();
+        rb = GetComponentInParent<Rigidbody>();
+        gizmoHelper = FindObjectOfType<GizmoHelper>();
 
         rb.centerOfMass = new Vector3(0, 0, 0);
+    }
 
-        terrainLayer = LayerMask.GetMask("Terrain");
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawCube(transform.position, hoverSize); 
     }
 
     private void FixedUpdate()
@@ -32,54 +40,98 @@ public class Hover : MonoBehaviour
         gizmoHelper.Clear();
 
         ApplyHoverForce();
-        ApplyStabalization();
+        Stabalize(Vector3.up);
+    }
+
+    private void ScrambleHoverPoints()
+    {
+        Vector3 min = -hoverSize / 2;
+        Vector3 max = hoverSize / 2;
+        Vector3 range = max - min;
+
+        Vector3 part = range / divisionCount;
+
+        if (points == null)
+        {
+            points = new HoverPoint[divisionCount, divisionCount];
+            bestHoverPoint = null;
+        }
+        else if (points.GetLength(0) != divisionCount)
+        {
+            for (int i = 0; i < divisionCount; i++)
+            {
+                for (int j = 0; j < divisionCount; j++)
+                {
+                    HoverPoint point = points[i,j];
+                    if (point != null)
+                    {
+                        Destroy(point);
+                    }
+                }
+            }
+
+            bestHoverPoint = null;
+        }
+
+        for (int i = 0; i < divisionCount; i++)
+        {
+            float randomX = Random.Range(i * part.x, (i + 1) * part.x);
+
+            for (int j = 0; j < divisionCount; j++)
+            {
+                if (points[i, j] == null)
+                {
+                    points[i, j] = Instantiate(hoverPointPrefab, transform);
+                }
+                else if (points[i, j] == bestHoverPoint)
+                {
+                    continue;
+                }
+
+                float randomZ = Random.Range(j * part.z, (j + 1) * part.z);
+
+                points[i, j].transform.localPosition = new Vector3(min.x + randomX, min.y, min.z + randomZ);
+            }
+        }
     }
 
     private void ApplyHoverForce()
     {
-        float lowestPointY = meshCollider.bounds.min.y;
+        ScrambleHoverPoints();
 
-        RaycastHit closestHit = new RaycastHit();
-        closestHit.distance = Mathf.Infinity;
-
-        foreach (Transform point in hoverPoints)
+        if (bestHoverPoint != null)
         {
-            Vector3 pos = new Vector3(point.position.x, lowestPointY, point.position.z);
-
-            bool isHit = Physics.Raycast(pos, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer);
-
-            if (!isHit) continue;
-
-            gizmoHelper.Colour = Color.white;
-            gizmoHelper.DrawLine(point.position, hit.point);
-            gizmoHelper.DrawSphere(hit.point, 1f);
-
-            if (hit.distance < closestHit.distance)
-            {
-                closestHit = hit;
-            }
+            bestHoverPoint.Recalculate(targetHeight);
         }
 
-        if (closestHit.distance != Mathf.Infinity)
+        for (int i = 0; i < points.GetLength(0); i++)
         {
-            rb.AddForce(maxHoverThrust * (1f - (closestHit.distance / targetHeight)) * Vector3.up, ForceMode.Acceleration);
+            for (int j = 0; j < points.GetLength(1); j++)
+            {
+                HoverPoint point = points[i, j];
+                if (point == bestHoverPoint) continue;
+
+                point.Recalculate(targetHeight);
+
+                gizmoHelper.Colour = Color.white;
+                gizmoHelper.DrawSphere(point.HitPos, 1f);
+
+                if (bestHoverPoint == null || point.DistanceFromGround < bestHoverPoint.DistanceFromGround)
+                {
+                    bestHoverPoint = point;
+                }
+            }
+                
+        }
+
+        if (bestHoverPoint.DistanceFromGround != Mathf.Infinity)
+        {
+            rb.AddForce(maxHoverThrust * (1f - (bestHoverPoint.DistanceFromGround / targetHeight)) * Vector3.up, ForceMode.Acceleration);
 
             gizmoHelper.Colour = Color.green;
-            gizmoHelper.DrawSphere(closestHit.point, 1.1f);
+            gizmoHelper.DrawSphere(bestHoverPoint.HitPos, 1.1f);
         }
     }
-
-    private void ApplyStabalization()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, targetHeight, terrainLayer))
-        {
-            Stabalize(hit.normal);
-        }
-        else
-        {
-            Stabalize(Vector3.up);
-        }
-    }    
 
     private void Stabalize(Vector3 groundNormal)
     {
