@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4558342859956943934}
   - component: {fileID: 7128072753906155684}
+  - component: {fileID: 2856316412658875854}
   m_Layer: 0
   m_Name: Hover Component
   m_TagString: Untagged
@@ -24,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5685986360187140903}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1.86, z: 2.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -46,8 +47,25 @@ MonoBehaviour:
   maxHoverThrust: 30
   targetHeight: 4
   stabalizeForce: 60
-  bestHoverPointsCount: 4
-  divisionCount: 4
+  divisionCount: 3
   hoverSize: {x: 16.67, y: 0, z: 14.05}
   hoverPointPrefab: {fileID: 7165361551721385285, guid: dcdaf33736ace644caada8502d1f0a34,
     type: 3}
+--- !u!114 &2856316412658875854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5685986360187140903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5462329cdbc9bc04c90170182ec7c7c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  horizontalSpeed: 25
+  verticalSpeed: 80
+  terrainDetectionRange: 30
+  targetHeight: 4
+  terrainRepulsionDistance: 10
+  repulsionSpeed: 5

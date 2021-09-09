@@ -5,31 +5,26 @@ using DebugHelper;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] float speed = 10f;
+    [SerializeField] float horizontalSpeed = 10f;
+    [SerializeField] float verticalSpeed = 40f;
+
     [SerializeField] float terrainDetectionRange = 30f;
     [SerializeField] float targetHeight = 2f;
     [SerializeField] float terrainRepulsionDistance = 15f;
     [SerializeField] float repulsionSpeed = 5f;
 
     Rigidbody rb;
-    MeshCollider meshCollider;
     LayerMask terrainLayer;
-
-    GizmoHelper gizmoHelper;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        meshCollider = GetComponent<MeshCollider>();
+        rb = GetComponentInParent<Rigidbody>();
         terrainLayer = LayerMask.GetMask("Terrain");
-
-        gizmoHelper = FindObjectOfType<GizmoHelper>();
     }
 
     private void FixedUpdate()
     {
-        Vector3 lowestPoint = meshCollider.bounds.min;
-        Vector3 start = new Vector3(transform.position.x, lowestPoint.y, transform.position.z);
+        Vector3 start = transform.position;
 
         Vector3 moveForce = GetMoveForce();
 
@@ -38,11 +33,8 @@ public class Movement : MonoBehaviour
         bool isHit = Physics.Raycast(start, moveForce, out RaycastHit hit, terrainDetectionRange, terrainLayer);
 
         if (isHit)
-        { 
+        {
             Vector3 target = hit.point + (Vector3.up * targetHeight);
-
-            gizmoHelper.Colour = Color.yellow;
-            gizmoHelper.DrawSphere(target, 1f);
 
             Vector3 targetDir = target - start;
             targetDir.Normalize();
@@ -51,22 +43,20 @@ public class Movement : MonoBehaviour
             {
                 float horizontalRepulsionMult = (1 - (hit.distance / terrainRepulsionDistance)) * repulsionSpeed;
 
-                targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * speed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
+                targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * verticalSpeed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
             }
             else
             {
-                float horizontalMoveMult = (hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance);
+                float horizontalMoveMult = ((hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance)) * horizontalSpeed;
 
-                targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y, targetDir.z * horizontalMoveMult);
-
-                targetDir *= speed;
+                targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y * verticalSpeed, targetDir.z * horizontalMoveMult);
             }
 
             rb.AddForce(targetDir, ForceMode.Force);
         }
         else
         {
-            rb.AddForce(moveForce * speed, ForceMode.Force);
+            rb.AddForce(moveForce * horizontalSpeed, ForceMode.Force);
         }
         
     }

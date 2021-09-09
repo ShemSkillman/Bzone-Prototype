@@ -725,7 +725,6 @@ GameObject:
   - component: {fileID: 7747742314029194170}
   - component: {fileID: 8338789202827882340}
   - component: {fileID: 8338789202827882343}
-  - component: {fileID: 5002236533289037427}
   - component: {fileID: 1322677238930199083}
   m_Layer: 0
   m_Name: czar 1
@@ -831,23 +830,6 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7464449398323839584, guid: 4430b5bef85651544a753465a4f77ab4, type: 3}
---- !u!114 &5002236533289037427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8338789202827882342}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5462329cdbc9bc04c90170182ec7c7c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
-  terrainDetectionRange: 30
-  targetHeight: 5
-  terrainRepulsionDistance: 15
-  repulsionSpeed: 5
 --- !u!114 &1322677238930199083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1064,13 +1046,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hover Component
       objectReference: {fileID: 0}
-    - target: {fileID: 7128072753906155684, guid: feff68f94efada3489efbc60ca9df925,
-        type: 3}
-      propertyPath: divisionCount
-      value: 3
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6213866296437704295, guid: feff68f94efada3489efbc60ca9df925, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: feff68f94efada3489efbc60ca9df925, type: 3}
 --- !u!4 &6750470094730473829 stripped
 Transform:
