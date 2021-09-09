@@ -1,22 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DebugHelper;
 
 public class Movement : MonoBehaviour
 {
     [SerializeField] float speed = 10f;
-    [SerializeField] float terrianDetectionRange = 30f;
+    [SerializeField] float terrainDetectionRange = 30f;
     [SerializeField] float targetHeight = 2f;
+    [SerializeField] float terrainRepulsionDistance = 15f;
+    [SerializeField] float repulsionSpeed = 5f;
 
     Rigidbody rb;
     MeshCollider meshCollider;
     LayerMask terrainLayer;
+
+    GizmoHelper gizmoHelper;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         meshCollider = GetComponent<MeshCollider>();
         terrainLayer = LayerMask.GetMask("Terrain");
+
+        gizmoHelper = FindObjectOfType<GizmoHelper>();
     }
 
     private void FixedUpdate()
@@ -26,17 +33,36 @@ public class Movement : MonoBehaviour
 
         Vector3 moveForce = GetMoveForce();
 
-        Debug.DrawLine(start, start + (moveForce * terrianDetectionRange), Color.red);
+        Debug.DrawLine(start, start + (moveForce * terrainDetectionRange), Color.red);
 
-        bool isHit = Physics.Raycast(start, moveForce, out RaycastHit hit, terrianDetectionRange, terrainLayer);
+        bool isHit = Physics.Raycast(start, moveForce, out RaycastHit hit, terrainDetectionRange, terrainLayer);
 
         if (isHit)
-        {
+        { 
             Vector3 target = hit.point + (Vector3.up * targetHeight);
 
-            Vector3 targetDir = target - start;
+            gizmoHelper.Colour = Color.yellow;
+            gizmoHelper.DrawSphere(target, 1f);
 
-            rb.AddForce(targetDir.normalized * speed, ForceMode.Force);
+            Vector3 targetDir = target - start;
+            targetDir.Normalize();
+
+            if (hit.distance <= terrainRepulsionDistance)
+            {
+                float horizontalRepulsionMult = (1 - (hit.distance / terrainRepulsionDistance)) * repulsionSpeed;
+
+                targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * speed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
+            }
+            else
+            {
+                float horizontalMoveMult = (hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance);
+
+                targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y, targetDir.z * horizontalMoveMult);
+
+                targetDir *= speed;
+            }
+
+            rb.AddForce(targetDir, ForceMode.Force);
         }
         else
         {

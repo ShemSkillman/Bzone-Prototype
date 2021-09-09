@@ -844,8 +844,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  terrianDetectionRange: 30
+  terrainDetectionRange: 30
   targetHeight: 5
+  terrainRepulsionDistance: 15
+  repulsionSpeed: 5
 --- !u!114 &1322677238930199083
 MonoBehaviour:
   m_ObjectHideFlags: 0

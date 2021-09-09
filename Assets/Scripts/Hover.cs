@@ -37,8 +37,6 @@ public class Hover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        gizmoHelper.Clear();
-
         ApplyHoverForce();
         Stabalize(Vector3.up);
     }
@@ -58,6 +56,8 @@ public class Hover : MonoBehaviour
         }
         else if (points.GetLength(0) != divisionCount)
         {
+            points = new HoverPoint[divisionCount, divisionCount];
+
             for (int i = 0; i < divisionCount; i++)
             {
                 for (int j = 0; j < divisionCount; j++)
@@ -113,8 +113,12 @@ public class Hover : MonoBehaviour
 
                 point.Recalculate(targetHeight);
 
-                gizmoHelper.Colour = Color.white;
-                gizmoHelper.DrawSphere(point.HitPos, 1f);
+                if (point.DistanceFromGround != Mathf.Infinity)
+                {
+                    gizmoHelper.Colour = Color.white;
+                    gizmoHelper.DrawSphere(point.HitPos, 1f);
+                    gizmoHelper.DrawLine(point.transform.position, point.HitPos);
+                }               
 
                 if (bestHoverPoint == null || point.DistanceFromGround < bestHoverPoint.DistanceFromGround)
                 {
@@ -130,6 +134,7 @@ public class Hover : MonoBehaviour
 
             gizmoHelper.Colour = Color.green;
             gizmoHelper.DrawSphere(bestHoverPoint.HitPos, 1.1f);
+            gizmoHelper.DrawLine(bestHoverPoint.transform.position, bestHoverPoint.HitPos);
         }
     }
 

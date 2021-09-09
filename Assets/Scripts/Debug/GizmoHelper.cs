@@ -15,6 +15,8 @@ namespace DebugHelper
             {
                 obj.Draw();
             }
+
+            objectsToRender.Clear();
         }
 
         public void DrawSphere(Vector3 center, float radius)
@@ -25,11 +27,6 @@ namespace DebugHelper
         public void DrawLine(Vector3 from, Vector3 to)
         {
             objectsToRender.Add(new GizmoLine(from, to, Colour));
-        }
-
-        public void Clear()
-        {
-            objectsToRender.Clear();
         }
     }
 }
