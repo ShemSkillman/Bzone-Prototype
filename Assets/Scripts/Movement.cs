@@ -32,32 +32,32 @@ public class Movement : MonoBehaviour
 
         bool isHit = Physics.Raycast(start, moveForce, out RaycastHit hit, terrainDetectionRange, terrainLayer);
 
-        if (isHit)
-        {
-            Vector3 target = hit.point + (Vector3.up * targetHeight);
+        //if (isHit)
+        //{
+        //    Vector3 target = hit.point + (Vector3.up * targetHeight);
 
-            Vector3 targetDir = target - start;
-            targetDir.Normalize();
+        //    Vector3 targetDir = target - start;
+        //    targetDir.Normalize();
 
-            if (hit.distance <= terrainRepulsionDistance)
-            {
-                float horizontalRepulsionMult = (1 - (hit.distance / terrainRepulsionDistance)) * repulsionSpeed;
+        //    if (hit.distance <= terrainRepulsionDistance)
+        //    {
+        //        float horizontalRepulsionMult = (1 - (hit.distance / terrainRepulsionDistance)) * repulsionSpeed;
 
-                targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * verticalSpeed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
-            }
-            else
-            {
-                float horizontalMoveMult = ((hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance)) * horizontalSpeed;
+        //        targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * verticalSpeed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
+        //    }
+        //    else
+        //    {
+        //        float horizontalMoveMult = ((hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance)) * horizontalSpeed;
 
-                targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y * verticalSpeed, targetDir.z * horizontalMoveMult);
-            }
+        //        targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y * verticalSpeed, targetDir.z * horizontalMoveMult);
+        //    }
 
-            rb.AddForce(targetDir, ForceMode.Force);
-        }
-        else
-        {
+        //    rb.AddForce(targetDir, ForceMode.Force);
+        //}
+        //else
+        //{
             rb.AddForce(moveForce * horizontalSpeed, ForceMode.Force);
-        }
+        //}
         
     }
 
