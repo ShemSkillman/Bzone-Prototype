@@ -9,8 +9,6 @@ public class HoverPoint : MonoBehaviour
 
     public float DistanceFromGround { get; set; } = Mathf.Infinity;
 
-    public Vector3 Normal { get; set; } = Vector3.up;
-
     public void Recalculate(float maxDistance)
     {
         bool isHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, maxDistance, LayerMask.GetMask("Terrain"));
@@ -23,7 +21,6 @@ public class HoverPoint : MonoBehaviour
         {
             DistanceFromGround = hit.distance;
             HitPos = hit.point;
-            Normal = hit.normal;
         }
     }
 }
