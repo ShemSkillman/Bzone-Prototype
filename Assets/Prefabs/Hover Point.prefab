@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5298291830928001785}
-  - component: {fileID: 7165361551721385285}
+  - component: {fileID: 4635814347179863358}
   m_Layer: 0
   m_Name: Hover Point
   m_TagString: Untagged
@@ -31,7 +31,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7165361551721385285
+--- !u!114 &4635814347179863358
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,6 +40,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9009829310100641058}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c5bfe128bb491a4f94cd5df000d6ff7, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ac4b13dbbf94df4d8cdfa30faca39f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

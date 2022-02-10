@@ -309,14 +309,10 @@ PrefabInstance:
       propertyPath: planeSize.z
       value: 14.71
       objectReference: {fileID: 0}
-    - target: {fileID: 1188220415, guid: 1fbd776f4b788614e82d9acff67ec6af, type: 3}
-      propertyPath: targetHeight
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 1322677238930199083, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5002236533289037427, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}

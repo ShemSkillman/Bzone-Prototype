@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0ef8221a9df40d49b7f8e0f4b4eb7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHoverThrust: 10
-  targetHeight: 2
+  maxHoverThrust: 25
+  targetHeight: 4
   stabalizeForce: 100
   divisionCount: 4
   planeSize: {x: 10, y: 0, z: 10}
-  hoverPointPrefab: {fileID: 7165361551721385285, guid: dcdaf33736ace644caada8502d1f0a34,
+  hoverPointPrefab: {fileID: 4635814347179863358, guid: dcdaf33736ace644caada8502d1f0a34,
     type: 3}
 --- !u!114 &2856316412658875854
 MonoBehaviour:
