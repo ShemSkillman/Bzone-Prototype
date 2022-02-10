@@ -7,17 +7,17 @@ namespace HoverSystem
     {
         [SerializeField] float maxHoverThrust = 10f;
         [SerializeField] float targetHeight = 2f;
-        [SerializeField] float stabalizeForce = 100f;
-
+        [SerializeField] Vector3 planeSize;
         [SerializeField] int divisionCount = 4;
 
-        [SerializeField] Vector3 planeSize;
+        [Header("Stabalization")]
+        [SerializeField] float stabalizeForce = 100f;
+        [SerializeField] bool stabalizeZ = true;
+        [SerializeField] bool stabalizeX = false;
+
 
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
-
-        [SerializeField] HoverPoint hoverPointPrefab;
-
         Rigidbody rb;
 
         private void Awake()
@@ -59,7 +59,9 @@ namespace HoverSystem
                     HoverPoint point;
                     if (reserves.Count < 1)
                     {
-                        point = Instantiate(hoverPointPrefab, transform);
+                        GameObject instance = new GameObject("Auto Generated Hover Point");
+                        instance.transform.parent = transform;
+                        point = instance.AddComponent<HoverPoint>();
                     }
                     else
                     {
@@ -121,11 +123,24 @@ namespace HoverSystem
 
         private void Stabalize(Vector3 groundNormal)
         {
+            if (!stabalizeX && !stabalizeZ)
+            {
+                return;
+            }
+
             var cross = Vector3.Cross(transform.up, groundNormal);
 
             var turnDir = transform.InverseTransformDirection(cross);
 
-            rb.AddTorque(transform.forward * turnDir.z * stabalizeForce);
+            if (stabalizeZ)
+            {
+                rb.AddTorque(transform.forward * turnDir.z * stabalizeForce);
+            }
+            
+            if (stabalizeX)
+            {
+                rb.AddTorque(transform.right * turnDir.x * stabalizeForce);
+            }            
         }
 
         private void OnDrawGizmos()
