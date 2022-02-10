@@ -20,27 +20,32 @@ namespace HoverSystem
 
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
+
         Rigidbody rb;
 
         private void Awake()
         {
             rb = GetComponentInParent<Rigidbody>();
             rb.centerOfMass = new Vector3(0, 0, 0);
+
+            GenerateHoverPoints();
         }
 
         private void FixedUpdate()
         {
+            // Hover points must be regenerated if division count is changed
+            if (points.GetLength(0) != divisionCount)
+            {
+                GenerateHoverPoints();
+            }
+
+            FindBestHoverPoint();
             ApplyHoverForce();
             Stabalize(Vector3.up);
         }
 
-        private void UpdateHoverPoints()
+        private void GenerateHoverPoints()
         {
-            if (points != null && points.GetLength(0) == divisionCount)
-            {
-                return;
-            }
-
             Vector3 min = -planeSize / 2;
             Vector3 max = planeSize / 2;
             Vector3 range = max - min;
@@ -48,10 +53,14 @@ namespace HoverSystem
             Vector3 segmentBounds = range / divisionCount;
 
             points = new HoverPoint[divisionCount, divisionCount];
+
+            // Reuse hoverpoints if any are available
             List<HoverPoint> reserves = new List<HoverPoint>(GetComponentsInChildren<HoverPoint>());
 
             bestHoverPoint = null;
 
+            // Creates hover points when needed
+            // Positions each point in a grid-like fashion on the plane
             for (int i = 0; i < divisionCount; i++)
             {
                 float xPos = ((i * segmentBounds.x) + ((i + 1) * segmentBounds.x)) / 2;
@@ -79,6 +88,7 @@ namespace HoverSystem
                 }
             }
 
+            // Detroy extra hover points that are not in use
             while (reserves.Count > 0)
             {
                 HoverPoint toDestroy = reserves[0];
@@ -87,10 +97,10 @@ namespace HoverSystem
             }
         }
 
-        private void ApplyHoverForce()
+        // The 'best' hover point is one which has the closest hit distance to the ground
+        // It determines the height of the object above the ground
+        private void FindBestHoverPoint()
         {
-            UpdateHoverPoints();
-
             if (bestHoverPoint != null)
             {
                 bestHoverPoint.Recalculate(targetHeight);
@@ -111,7 +121,10 @@ namespace HoverSystem
                     }
                 }
             }
+        }
 
+        private void ApplyHoverForce()
+        {
             if (bestHoverPoint == null)
             {
                 return;
@@ -123,6 +136,7 @@ namespace HoverSystem
             }
         }
 
+        // Tries to keep object level with the ground
         private void Stabalize(Vector3 groundNormal)
         {
             if (!stabalizeX && !stabalizeZ)
