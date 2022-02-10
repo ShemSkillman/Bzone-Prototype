@@ -7,14 +7,16 @@ namespace HoverSystem
     {
         [SerializeField] float maxHoverThrust = 10f;
         [SerializeField] float targetHeight = 2f;
+
+        [Header("Plane Settings")]
         [SerializeField] Vector3 planeSize;
         [SerializeField] int divisionCount = 4;
+        [SerializeField] Color planeColor = Color.cyan;
 
         [Header("Stabalization")]
         [SerializeField] float stabalizeForce = 100f;
         [SerializeField] bool stabalizeZ = true;
         [SerializeField] bool stabalizeX = false;
-
 
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
@@ -175,7 +177,7 @@ namespace HoverSystem
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.cyan;
+            Gizmos.color = planeColor;
             Matrix4x4 currentMatrix = Gizmos.matrix;
             Gizmos.matrix = transform.localToWorldMatrix;
             Gizmos.DrawCube(Vector3.zero, planeSize);

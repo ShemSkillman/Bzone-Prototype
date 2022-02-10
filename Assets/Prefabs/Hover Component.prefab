@@ -46,11 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHoverThrust: 25
   targetHeight: 4
-  stabalizeForce: 100
-  divisionCount: 4
   planeSize: {x: 10, y: 0, z: 10}
-  hoverPointPrefab: {fileID: 4635814347179863358, guid: dcdaf33736ace644caada8502d1f0a34,
-    type: 3}
+  divisionCount: 4
+  planeColor: {r: 0, g: 1, b: 1, a: 1}
+  stabalizeForce: 100
+  stabalizeZ: 1
+  stabalizeX: 0
 --- !u!114 &2856316412658875854
 MonoBehaviour:
   m_ObjectHideFlags: 0
