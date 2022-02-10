@@ -46,9 +46,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHoverThrust: 25
   targetHeight: 4
-  planeSize: {x: 10, y: 0, z: 10}
-  divisionCount: 4
-  planeColor: {r: 0, g: 1, b: 1, a: 1}
+  gridSize: {x: 10, y: 0, z: 10}
+  colCount: 4
+  rowCount: 4
+  gridColour: {r: 0, g: 1, b: 1, a: 1}
   stabalizeForce: 100
   stabalizeZ: 1
   stabalizeX: 0

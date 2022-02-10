@@ -3,15 +3,22 @@ using UnityEngine;
 
 namespace HoverSystem
 {
-    public class HoverPlane : MonoBehaviour
+    public class HoverGrid : MonoBehaviour
     {
+        [Header("Hover Settings")]
         [SerializeField] float maxHoverThrust = 10f;
         [SerializeField] float targetHeight = 2f;
 
-        [Header("Plane Settings")]
-        [SerializeField] Vector3 planeSize;
-        [SerializeField] int divisionCount = 4;
-        [SerializeField] Color planeColor = Color.cyan;
+        [Header("Grid Settings")]
+        [SerializeField] Vector3 gridSize;
+
+        [Range(0, 100)]
+        [SerializeField] int colCount = 4;
+
+        [Range(0, 100)]
+        [SerializeField] int rowCount = 4;
+
+        [SerializeField] Color gridColour = Color.cyan;
 
         [Header("Stabalization")]
         [SerializeField] float stabalizeForce = 100f;
@@ -20,6 +27,7 @@ namespace HoverSystem
 
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
+        Vector3 usedGridSize;
 
         Rigidbody rb;
 
@@ -34,7 +42,9 @@ namespace HoverSystem
         private void FixedUpdate()
         {
             // Hover points must be regenerated if division count is changed
-            if (points.GetLength(0) != divisionCount)
+            if (points.GetLength(0) != colCount ||
+                points.GetLength(1) != rowCount ||
+                usedGridSize != gridSize)
             {
                 GenerateHoverPoints();
             }
@@ -46,13 +56,13 @@ namespace HoverSystem
 
         private void GenerateHoverPoints()
         {
-            Vector3 min = -planeSize / 2;
-            Vector3 max = planeSize / 2;
+            Vector3 min = -gridSize / 2;
+            Vector3 max = gridSize / 2;
             Vector3 range = max - min;
 
-            Vector3 segmentBounds = range / divisionCount;
+            Vector3 segmentBounds = new Vector3(range.x / colCount, 0.0f, range.z / rowCount);
 
-            points = new HoverPoint[divisionCount, divisionCount];
+            points = new HoverPoint[colCount, rowCount];
 
             // Reuse hoverpoints if any are available
             List<HoverPoint> reserves = new List<HoverPoint>(GetComponentsInChildren<HoverPoint>());
@@ -61,11 +71,11 @@ namespace HoverSystem
 
             // Creates hover points when needed
             // Positions each point in a grid-like fashion on the plane
-            for (int i = 0; i < divisionCount; i++)
+            for (int i = 0; i < colCount; i++)
             {
                 float xPos = ((i * segmentBounds.x) + ((i + 1) * segmentBounds.x)) / 2;
 
-                for (int j = 0; j < divisionCount; j++)
+                for (int j = 0; j < rowCount; j++)
                 {
                     HoverPoint point;
                     if (reserves.Count < 1)
@@ -82,7 +92,7 @@ namespace HoverSystem
 
                     float zPos = ((j * segmentBounds.z) + ((j + 1) * segmentBounds.z)) / 2;
 
-                    point.transform.localPosition = new Vector3(min.x + xPos, min.y, min.z + zPos);
+                    point.transform.localPosition = new Vector3(min.x + xPos, 0.0f, min.z + zPos);
 
                     points[i, j] = point;
                 }
@@ -95,6 +105,8 @@ namespace HoverSystem
                 reserves.RemoveAt(0);
                 Destroy(toDestroy.gameObject);
             }
+
+            usedGridSize = gridSize;
         }
 
         // The 'best' hover point is one which has the closest hit distance to the ground
@@ -191,10 +203,10 @@ namespace HoverSystem
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = planeColor;
+            Gizmos.color = gridColour;
             Matrix4x4 currentMatrix = Gizmos.matrix;
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(Vector3.zero, planeSize);
+            Gizmos.DrawCube(Vector3.zero, gridSize);
             Gizmos.matrix = currentMatrix;
         }
     }

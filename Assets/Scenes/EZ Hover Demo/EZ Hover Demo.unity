@@ -302,6 +302,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1188220415, guid: 1fbd776f4b788614e82d9acff67ec6af, type: 3}
+      propertyPath: gridSize.x
+      value: 15.94
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188220415, guid: 1fbd776f4b788614e82d9acff67ec6af, type: 3}
+      propertyPath: gridSize.z
+      value: 15.26
+      objectReference: {fileID: 0}
+    - target: {fileID: 1188220415, guid: 1fbd776f4b788614e82d9acff67ec6af, type: 3}
       propertyPath: planeSize.x
       value: 17.4
       objectReference: {fileID: 0}
