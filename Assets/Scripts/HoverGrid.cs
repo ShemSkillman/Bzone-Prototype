@@ -26,10 +26,13 @@ namespace HoverSystem
         [SerializeField] bool stabalizeZ = true;
         [SerializeField] bool stabalizeX = false;
 
+        [Header("Gizmo Settings")]
+        [SerializeField] bool alwaysRenderGizmos = false;
+
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
         Vector3 usedGridSize;
-        Vector3 segmentBounds;
+        Vector3 gridSquareBounds;
 
         Rigidbody rb;
 
@@ -71,7 +74,7 @@ namespace HoverSystem
             Vector3 max = gridSize / 2;
             Vector3 range = max - min;
 
-            segmentBounds = new Vector3(range.x / colCount, 0.0f, range.z / rowCount);
+            gridSquareBounds = new Vector3(range.x / colCount, 0.0f, range.z / rowCount);
 
             points = new HoverPoint[colCount, rowCount];
 
@@ -84,7 +87,7 @@ namespace HoverSystem
             // Positions each point in a grid-like fashion on the plane
             for (int i = 0; i < colCount; i++)
             {
-                float xPos = ((i * segmentBounds.x) + ((i + 1) * segmentBounds.x)) / 2;
+                float xPos = ((i * gridSquareBounds.x) + ((i + 1) * gridSquareBounds.x)) / 2;
 
                 for (int j = 0; j < rowCount; j++)
                 {
@@ -102,7 +105,7 @@ namespace HoverSystem
                         reserves.RemoveAt(0);
                     }
 
-                    float zPos = ((j * segmentBounds.z) + ((j + 1) * segmentBounds.z)) / 2;
+                    float zPos = ((j * gridSquareBounds.z) + ((j + 1) * gridSquareBounds.z)) / 2;
 
                     point.transform.localPosition = new Vector3(min.x + xPos, 0.0f, min.z + zPos);
 
@@ -185,6 +188,22 @@ namespace HoverSystem
 
         private void OnDrawGizmos()
         {
+            if (alwaysRenderGizmos)
+            {
+                RenderGizmos();
+            }            
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            if (!alwaysRenderGizmos)
+            {
+                RenderGizmos();
+            }
+        }
+
+        private void RenderGizmos()
+        {
             if (points == null)
             {
                 return;
@@ -196,36 +215,49 @@ namespace HoverSystem
                 {
                     HoverPoint point = points[i, j];
 
-                    Gizmos.color = Color.white;
-                    Gizmos.DrawLine(point.transform.position, point.HitPos);
-
-                    if (point == bestHoverPoint && point.DistanceFromGround != Mathf.Infinity)
-                    {
-                        Gizmos.color = Color.green;
-                    }
-                    else if (point.DistanceFromGround != Mathf.Infinity)
-                    {
-                        Gizmos.color = Color.yellow;
-                    }
-
-                    Gizmos.DrawSphere(point.HitPos, 1f);
-
-                    Gizmos.color = gridColour;
-                    Matrix4x4 currentMatrix = Gizmos.matrix;
-                    Gizmos.matrix = point.transform.localToWorldMatrix;
-                    Gizmos.DrawCube(Vector3.zero, segmentBounds * 0.95f);
-                    Gizmos.matrix = currentMatrix;
+                    DrawRaycastLine(point);
+                    DrawHitSphere(point);
                 }
             }
+
+            for (int i = 0; i < points.GetLength(0); i++)
+            {
+                for (int j = 0; j < points.GetLength(1); j++)
+                {
+                    HoverPoint point = points[i, j];
+                    DrawGridSquare(point);
+                }
+            }
+        }        
+
+        private void DrawRaycastLine(HoverPoint point)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(point.transform.position, point.HitPos);
         }
 
-        private void OnDrawGizmosSelected()
+        private void DrawHitSphere(HoverPoint point)
         {
-            //Gizmos.color = gridColour;
-            //Matrix4x4 currentMatrix = Gizmos.matrix;
-            //Gizmos.matrix = transform.localToWorldMatrix;
-            //Gizmos.DrawCube(Vector3.zero, gridSize);
-            //Gizmos.matrix = currentMatrix;
+            Gizmos.color = Color.white;
+            if (point == bestHoverPoint && point.DistanceFromGround != Mathf.Infinity)
+            {
+                Gizmos.color = Color.green;
+            }
+            else if (point.DistanceFromGround != Mathf.Infinity)
+            {
+                Gizmos.color = Color.yellow;
+            }
+
+            Gizmos.DrawSphere(point.HitPos, 1f);
+        }
+
+        private void DrawGridSquare(HoverPoint point)
+        {
+            Gizmos.color = gridColour;
+            Matrix4x4 currentMatrix = Gizmos.matrix;
+            Gizmos.matrix = point.transform.localToWorldMatrix;
+            Gizmos.DrawCube(Vector3.zero, gridSquareBounds * 0.95f);
+            Gizmos.matrix = currentMatrix;
         }
     }
 }
