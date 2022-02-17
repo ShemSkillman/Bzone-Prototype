@@ -7,17 +7,17 @@ namespace HoverSystem
     public class HoverGrid : MonoBehaviour
     {
         [Header("Hover Settings")]
-        [SerializeField] float maxHoverThrust = 10f;
-        [SerializeField] float targetHeight = 2f;
+        [SerializeField] float maxHoverThrust = 30f;
+        [SerializeField] float targetHeight = 4f;
 
         [Header("Grid Settings")]
-        [SerializeField] Vector3 gridSize;
+        [SerializeField] Vector3 gridSize = new Vector3(10, 0.2f, 10);
 
         [Range(1, 100)]
-        [SerializeField] int colCount = 4;
+        [SerializeField] int colCount = 3;
 
         [Range(1, 100)]
-        [SerializeField] int rowCount = 4;
+        [SerializeField] int rowCount = 3;
 
         [SerializeField] Color gridColour = new Color(0, 1, 1, 0.5f);
 
@@ -39,6 +39,12 @@ namespace HoverSystem
         private void Awake()
         {
             rb = GetComponentInParent<Rigidbody>();
+            if (rb == null)
+            {
+                Debug.LogError(nameof(HoverGrid) + " component could not find a " + nameof(Rigidbody) + " component on the gameobject " + gameObject.name +
+                    " or on any of its parent gameobjects. Please add a " + nameof(Rigidbody) + " component so that physics can be applied.");
+                return;
+            }
             rb.centerOfMass = new Vector3(0, 0, 0);
 
             GenerateHoverPoints();
@@ -46,6 +52,11 @@ namespace HoverSystem
 
         private void FixedUpdate()
         {
+            if (rb == null)
+            {
+                return;
+            }
+
             FindBestHoverPoint();
             ApplyHoverForce();
             Stabalize(Vector3.up);
@@ -74,7 +85,7 @@ namespace HoverSystem
             Vector3 max = gridSize / 2;
             Vector3 range = max - min;
 
-            gridSquareBounds = new Vector3(range.x / colCount, 0.0f, range.z / rowCount);
+            gridSquareBounds = new Vector3(range.x / colCount, gridSize.y, range.z / rowCount);
 
             points = new HoverPoint[colCount, rowCount];
 
