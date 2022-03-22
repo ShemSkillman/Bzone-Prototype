@@ -58,19 +58,22 @@ namespace HoverSystem
                 {
                     float horizontalRepulsionMult = (1 - (hit.distance / terrainRepulsionDistance)) * repulsionSpeed;
 
-                    targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, targetDir.y * verticalSpeed * (hit.distance / terrainRepulsionDistance), -targetDir.z * horizontalRepulsionMult);
+                    targetDir = new Vector3(-targetDir.x * horizontalRepulsionMult, 0f, -targetDir.z * horizontalRepulsionMult);
                 }
                 else
                 {
                     float horizontalMoveMult = ((hit.distance - terrainRepulsionDistance) / (terrainDetectionRange - terrainRepulsionDistance)) * moveSpeed;
 
-                    targetDir = new Vector3(targetDir.x * horizontalMoveMult, targetDir.y * verticalSpeed, targetDir.z * horizontalMoveMult);
+                    targetDir = new Vector3(targetDir.x * horizontalMoveMult, 0f, targetDir.z * horizontalMoveMult);
                 }
+
+                hoverGrid.ApplyMaxHoverForce = true;
 
                 rb.AddForce(targetDir, ForceMode.Force);
             }
             else
             {
+                hoverGrid.ApplyMaxHoverForce = false;
                 rb.AddForce(moveForce * moveSpeed, ForceMode.Force);
             }
 

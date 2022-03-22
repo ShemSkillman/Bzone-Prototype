@@ -8,8 +8,11 @@ namespace HoverSystem
     {
         [Header("Hover Settings")]
         [SerializeField] float maxHoverThrust = 30f;
+        public float MaxHoverThrust { get { return maxHoverThrust; } }
+
         [SerializeField] float targetHeight = 4f;
         public float TargetHeight { get { return targetHeight; } }
+
         [SerializeField] LayerMask hoverableLayers = 1;
 
         [Header("Grid Settings")]
@@ -37,6 +40,8 @@ namespace HoverSystem
         Vector3 gridSquareBounds;
 
         Rigidbody rb;
+
+        public bool ApplyMaxHoverForce { get; set; } = false;
 
         private void Awake()
         {
@@ -168,6 +173,12 @@ namespace HoverSystem
 
         private void ApplyHoverForce()
         {
+            if (ApplyMaxHoverForce)
+            {
+                rb.AddForce(maxHoverThrust * Vector3.up, ForceMode.Acceleration);
+                return;
+            }
+
             if (bestHoverPoint == null)
             {
                 return;
