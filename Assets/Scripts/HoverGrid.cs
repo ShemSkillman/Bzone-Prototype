@@ -9,6 +9,7 @@ namespace HoverSystem
         [Header("Hover Settings")]
         [SerializeField] float maxHoverThrust = 30f;
         [SerializeField] float targetHeight = 4f;
+        [SerializeField] LayerMask hoverableLayers = 1;
 
         [Header("Grid Settings")]
         [SerializeField] Vector3 gridSize = new Vector3(10, 0.2f, 10);
@@ -68,7 +69,8 @@ namespace HoverSystem
             if (points == null ||
                 points.GetLength(0) != colCount ||
                 points.GetLength(1) != rowCount ||
-                usedGridSize != gridSize)
+                usedGridSize != gridSize ||
+                points[0,0].HoverableLayers.value != hoverableLayers.value)
             {
                 GenerateHoverPoints();
             }
@@ -115,6 +117,8 @@ namespace HoverSystem
                         point = reserves[0];
                         reserves.RemoveAt(0);
                     }
+
+                    point.HoverableLayers = hoverableLayers;
 
                     float zPos = ((j * gridSquareBounds.z) + ((j + 1) * gridSquareBounds.z)) / 2;
 

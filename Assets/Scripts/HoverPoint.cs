@@ -8,11 +8,13 @@ namespace HoverSystem
     {
         public Vector3 HitPos { get; set; } = Vector3.zero;
 
-        public float DistanceFromGround { get; set; } = Mathf.Infinity;
+        public float DistanceFromGround { get; private set; } = Mathf.Infinity;
+
+        public LayerMask HoverableLayers { get; set; }
 
         public void Recalculate(float maxDistance)
         {
-            bool isHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, maxDistance, LayerMask.GetMask("Terrain"));
+            bool isHit = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, maxDistance, HoverableLayers.value);
 
             if (!isHit)
             {
