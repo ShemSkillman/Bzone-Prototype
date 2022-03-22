@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Look : MonoBehaviour
 {
     [SerializeField] float verticalTurnSpeed = 5f;
     [SerializeField] float horizontalTurnSpeed = 5f;
-    [SerializeField] float minAngle = -30;
-    [SerializeField] float maxAngle = 60;
 
     Rigidbody rb;
 
@@ -21,7 +17,7 @@ public class Look : MonoBehaviour
         float x = Mathf.Clamp(Input.GetAxisRaw("Mouse X"), -1, 1);
         rb.AddTorque(Vector3.up * x * horizontalTurnSpeed);
 
-        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1) * 0.35f;     
+        float y = Mathf.Clamp(Input.GetAxisRaw("Mouse Y"), -1, 1);     
 
         var right = new Vector3(transform.right.x, 0f, transform.right.z);
         rb.AddTorque(right * y * verticalTurnSpeed * -1);

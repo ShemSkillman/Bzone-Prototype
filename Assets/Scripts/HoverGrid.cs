@@ -9,6 +9,7 @@ namespace HoverSystem
         [Header("Hover Settings")]
         [SerializeField] float maxHoverThrust = 30f;
         [SerializeField] float targetHeight = 4f;
+        public float TargetHeight { get { return targetHeight; } }
         [SerializeField] LayerMask hoverableLayers = 1;
 
         [Header("Grid Settings")]
@@ -46,7 +47,7 @@ namespace HoverSystem
                     " or on any of its parent gameobjects. Please add a " + nameof(Rigidbody) + " component so that physics can be applied.");
                 return;
             }
-            rb.centerOfMass = new Vector3(0, 0, 0);
+            rb.centerOfMass = Vector3.zero;
 
             GenerateHoverPoints();
         }
