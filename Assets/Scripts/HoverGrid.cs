@@ -14,6 +14,7 @@ namespace HoverSystem
         public float TargetHeight { get { return targetHeight; } }
 
         [SerializeField] LayerMask hoverableLayers = 1;
+        public LayerMask HoverableLayers { get { return hoverableLayers; } }
 
         [Header("Grid Settings")]
         [SerializeField] Vector3 gridSize = new Vector3(10, 0.2f, 10);
@@ -41,15 +42,13 @@ namespace HoverSystem
 
         Rigidbody rb;
 
-        public bool ApplyMaxHoverForce { get; set; } = false;
-
         private void Awake()
         {
             rb = GetComponentInParent<Rigidbody>();
             if (rb == null)
             {
-                Debug.LogError(nameof(HoverGrid) + " component could not find a " + nameof(Rigidbody) + " component on the gameobject " + gameObject.name +
-                    " or on any of its parent gameobjects. Please add a " + nameof(Rigidbody) + " component so that physics can be applied.");
+                Debug.LogError(nameof(HoverGrid) + " component could not find a rigidbody component on the gameobject " + gameObject.name +
+                    " or on any of its parent gameobjects. Please add a rigidbody component so that physics can be applied.");
                 return;
             }
             rb.centerOfMass = Vector3.zero;
@@ -173,12 +172,6 @@ namespace HoverSystem
 
         private void ApplyHoverForce()
         {
-            if (ApplyMaxHoverForce)
-            {
-                rb.AddForce(maxHoverThrust * Vector3.up, ForceMode.Acceleration);
-                return;
-            }
-
             if (bestHoverPoint == null)
             {
                 return;

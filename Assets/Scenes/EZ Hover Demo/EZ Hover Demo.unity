@@ -965,12 +965,12 @@ PrefabInstance:
     - target: {fileID: 4994400469016326293, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}
       propertyPath: terrainDetectionRange
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4994400469016326293, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}
       propertyPath: terrainRepulsionDistance
-      value: 10
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5002236533289037427, guid: 1fbd776f4b788614e82d9acff67ec6af,
         type: 3}
