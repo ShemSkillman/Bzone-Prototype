@@ -206,6 +206,11 @@ namespace HoverSystem
             }            
         }
 
+        public Vector3 GetDirectionPointOnGridBounds(Vector3 dir)
+        {
+            return transform.position + new Vector3(dir.x * (gridSize.x / 2), 0.0f, dir.z * (gridSize.z / 2));
+        }
+
         private void OnDrawGizmos()
         {
             if (alwaysRenderGizmos)

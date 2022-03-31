@@ -51,18 +51,7 @@ namespace HoverSystem
 
             Vector3 moveDir = GetMoveDirection();
 
-            Collider[] colliders = GetComponentsInParent<Collider>();
-            Vector3 closestPoint = transform.position;
-            foreach (Collider col in colliders)
-            {
-                Vector3 point = col.ClosestPoint(transform.parent.position + moveDir * 50f);
-                if (transform.InverseTransformPoint(point).magnitude > transform.InverseTransformPoint(closestPoint).magnitude)
-                {
-                    closestPoint = point;
-                }
-            }
-
-            Vector3 start = closestPoint;
+            Vector3 start = hoverGrid.GetDirectionPointOnGridBounds(moveDir);
 
             Debug.DrawLine(start, start + (moveDir * obstacleDetectionRange), Color.red);
 
