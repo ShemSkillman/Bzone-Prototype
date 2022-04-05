@@ -28,7 +28,10 @@ namespace HoverSystem
         [SerializeField] Color gridColour = new Color(0, 1, 1, 0.5f);
 
         [Header("Stabalization")]
-        [SerializeField] float stabalizeForce = 100f;
+
+        [Tooltip("Amount of torque force applied to stabalize the hover object.")]
+        [SerializeField] float stabalizeForce = 10f;
+
         [SerializeField] bool stabalizeZ = true;
         [SerializeField] bool stabalizeX = false;
 

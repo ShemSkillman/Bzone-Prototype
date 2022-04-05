@@ -9,13 +9,13 @@ namespace HoverSystem
         [Header("Obstacle Avoidance")]
 
         [Tooltip("Amount of vertical force applied to rise above oncoming obstacles.")]
-        [SerializeField] float hoverBoost = 40f;
+        [SerializeField] float hoverBoost = 30f;
 
         [Tooltip("Detection distance to oncoming obstacle before applying hover boost and repulsion.")]
-        [SerializeField] float obstacleDetectionRange = 30f;
+        [SerializeField] float obstacleDetectionRange = 10f;
 
         [Tooltip("Amount of repulsion force applied to prevent collision with oncoming obstacle within detection range.")]
-        [SerializeField] float repulsionSpeed = 5f;
+        [SerializeField] float repulsionSpeed = 10f;
 
         Rigidbody rb;
         HoverGrid hoverGrid;
@@ -78,7 +78,6 @@ namespace HoverSystem
             }
 
         }
-
         private Vector3 GetMoveDirection()
         {
             Vector3 verticalDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
