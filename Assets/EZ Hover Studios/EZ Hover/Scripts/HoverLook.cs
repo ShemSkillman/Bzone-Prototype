@@ -2,7 +2,7 @@
 
 namespace EZHover
 {
-    public class Look : MonoBehaviour
+    public class HoverLook : MonoBehaviour
     {
         [SerializeField] float verticalTurnSpeed = 5f;
         [SerializeField] float horizontalTurnSpeed = 5f;

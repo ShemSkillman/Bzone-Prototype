@@ -20,12 +20,10 @@ namespace EZHover
         [SerializeField] Vector3 gridSize = new Vector3(10, 0.2f, 10);
 
         [Range(1, 100)]
-        [SerializeField] int colCount = 3;
+        [SerializeField] int columnCount = 3;
 
         [Range(1, 100)]
         [SerializeField] int rowCount = 3;
-
-        [SerializeField] Color gridColour = new Color(0, 1, 1, 0.5f);
 
         [Header("Stabalization")]
 
@@ -37,6 +35,7 @@ namespace EZHover
 
         [Header("Gizmo Settings")]
         [SerializeField] bool alwaysRenderGizmos = false;
+        [SerializeField] Color gridColour = new Color(0, 1, 1, 0.5f);
 
         HoverPoint bestHoverPoint;
         HoverPoint[,] points;
@@ -75,7 +74,7 @@ namespace EZHover
         {
             // Hover points must be regenerated if division count is changed
             if (points == null ||
-                points.GetLength(0) != colCount ||
+                points.GetLength(0) != columnCount ||
                 points.GetLength(1) != rowCount ||
                 usedGridSize != gridSize ||
                 points[0,0].HoverableLayers.value != hoverableLayers.value)
@@ -95,9 +94,9 @@ namespace EZHover
             Vector3 max = gridSize / 2;
             Vector3 range = max - min;
 
-            gridSquareBounds = new Vector3(range.x / colCount, gridSize.y, range.z / rowCount);
+            gridSquareBounds = new Vector3(range.x / columnCount, gridSize.y, range.z / rowCount);
 
-            points = new HoverPoint[colCount, rowCount];
+            points = new HoverPoint[columnCount, rowCount];
 
             // Reuse hoverpoints if any are available
             List<HoverPoint> reserves = new List<HoverPoint>(GetComponentsInChildren<HoverPoint>());
@@ -106,7 +105,7 @@ namespace EZHover
 
             // Creates hover points when needed
             // Positions each point in a grid-like fashion on the plane
-            for (int i = 0; i < colCount; i++)
+            for (int i = 0; i < columnCount; i++)
             {
                 float xPos = ((i * gridSquareBounds.x) + ((i + 1) * gridSquareBounds.x)) / 2;
 
