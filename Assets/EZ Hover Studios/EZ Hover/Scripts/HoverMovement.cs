@@ -4,21 +4,36 @@ namespace EZHover
 {
     public class HoverMovement : MonoBehaviour
     {
-        [SerializeField] float moveSpeed = 10f;
+        [Header("Movement Settings")]
+
+        [SerializeField] private bool enableInput = true;
+        public bool EnableInput { get { return enableInput; } set { enableInput = value; } }        
+
+        [SerializeField] private float moveSpeed = 10f;
+        public float MoveSpeed { get { return moveSpeed; } set { moveSpeed = value; } }
 
         [Header("Obstacle Avoidance")]
 
         [Tooltip("Amount of vertical force applied to rise above oncoming obstacles.")]
-        [SerializeField] float hoverBoost = 30f;
+        [SerializeField] private float hoverBoost = 30f;
+        public float HoverBoost { get { return hoverBoost; } set { hoverBoost = value; } }
 
         [Tooltip("Detection distance to oncoming obstacle before applying hover boost and repulsion.")]
-        [SerializeField] float obstacleDetectionRange = 10f;
+        [SerializeField] private float obstacleDetectionRange = 10f;
+        public float ObstacleDetectionRange { get { return obstacleDetectionRange; } set { obstacleDetectionRange = value; } }
 
         [Tooltip("Amount of repulsion force applied to prevent collision with oncoming obstacle within detection range.")]
-        [SerializeField] float repulsionSpeed = 10f;
+        [SerializeField] private float repulsionSpeed = 10f;
+        public float RepulsionSpeed { get { return repulsionSpeed; } set { repulsionSpeed = value; } }
+
+        [Header("Gizmo Settings")]
+        [SerializeField] bool drawMoveDirectionLine = true;
+        public bool DrawMoveDetectionLine { get { return drawMoveDirectionLine; } set { drawMoveDirectionLine = value; } }
 
         Rigidbody rb;
         HoverGrid hoverGrid;
+
+        Vector3 moveDir;
 
         private void Awake()
         {
@@ -44,7 +59,7 @@ namespace EZHover
 
         private void FixedUpdate()
         {
-            if (hoverGrid == null || rb == null)
+            if (hoverGrid == null || rb == null || !enableInput)
             {
                 return;
             }
@@ -53,7 +68,10 @@ namespace EZHover
 
             Vector3 start = hoverGrid.GetDirectionPointOnGridBounds(moveDir);
 
-            Debug.DrawLine(start, start + (moveDir * obstacleDetectionRange), Color.red);
+            if (drawMoveDirectionLine)
+            {
+                Debug.DrawLine(start, start + (moveDir * obstacleDetectionRange), Color.red);
+            }            
 
             bool isHit = Physics.Raycast(start, moveDir, out RaycastHit hit, obstacleDetectionRange, hoverGrid.HoverableLayers);
 
@@ -83,10 +101,22 @@ namespace EZHover
             Vector3 verticalDir = new Vector3(transform.forward.x, 0f, transform.forward.z).normalized;
             Vector3 horizontalDir = new Vector3(transform.right.x, 0f, transform.right.z).normalized;
 
-            Vector3 verticalForce = verticalDir * Input.GetAxis("Vertical");
-            Vector3 horizontalForce = horizontalDir * Input.GetAxis("Horizontal");
+            Vector3 verticalForce = verticalDir * moveDir.y;
+            Vector3 horizontalForce = horizontalDir * moveDir.x;
+
+            moveDir = Vector3.zero;
 
             return verticalForce + horizontalForce;
+        }
+
+        public void Move(Vector2 moveDirection)
+        {
+            if (!enableInput)
+            {
+                return;
+            }
+
+            moveDir = moveDirection.normalized;
         }
     }
 }

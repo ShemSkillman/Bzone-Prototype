@@ -284,11 +284,11 @@ MonoBehaviour:
   gridSize: {x: 14.8, y: 0.39, z: 16.8}
   columnCount: 3
   rowCount: 3
-  gridColour: {r: 0, g: 1, b: 0.6943891, a: 0.6509804}
   stabalizeForce: 300
   stabalizeZ: 1
   stabalizeX: 0
   alwaysRenderGizmos: 0
+  gridColour: {r: 0, g: 1, b: 0.6943891, a: 0.6509804}
 --- !u!114 &4994400469016326293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,10 +301,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5462329cdbc9bc04c90170182ec7c7c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableInput: 1
   moveSpeed: 30
   hoverBoost: 60
   obstacleDetectionRange: 30
   repulsionSpeed: 60
+  drawMoveDirectionLine: 1
 --- !u!114 &8751454002100950265
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15d7719d7cc8f6b48afef525f77f018c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableInput: 1
   verticalTurnSpeed: 200
   horizontalTurnSpeed: 200
 --- !u!64 &853876675176264457
@@ -388,6 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5035601908543118709}
   - component: {fileID: 8338789202827882340}
+  - component: {fileID: 7310341212263055611}
   m_Layer: 0
   m_Name: Hover Tank
   m_TagString: Untagged
@@ -428,6 +432,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7310341212263055611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8338789202827882342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d249b2f29ed295e4cac9046d18020623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9014759969176729167
 GameObject:
   m_ObjectHideFlags: 0
