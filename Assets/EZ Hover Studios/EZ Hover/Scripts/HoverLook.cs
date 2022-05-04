@@ -28,13 +28,10 @@ namespace EZHover
                 return;
             }
 
-            //float x = Mathf.Clamp(turnDir.x, -1, 1);
-            rb.AddTorque(Vector3.up * turnDir.x * horizontalTurnSpeed);
-
-            //float y = Mathf.Clamp(turnDir.y, -1, 1);
+            rb.AddTorque(Vector3.up * turnDir.x * horizontalTurnSpeed * rb.mass);
 
             var right = new Vector3(transform.right.x, 0f, transform.right.z);
-            rb.AddTorque(right * turnDir.y * verticalTurnSpeed * -1);
+            rb.AddTorque(right * turnDir.y * verticalTurnSpeed * -1 * rb.mass);
         }
 
         public void Turn(Vector2 turnDirection)

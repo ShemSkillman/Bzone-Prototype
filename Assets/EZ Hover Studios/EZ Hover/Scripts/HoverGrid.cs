@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace EZHover
@@ -81,8 +82,8 @@ namespace EZHover
             {
                 GenerateHoverPoints();
             }
-
-            if (Application.isEditor)
+			
+			if (Application.isEditor)
             {
                 FindBestHoverPoint();
             }
@@ -199,12 +200,12 @@ namespace EZHover
 
             if (stabalizeZ)
             {
-                rb.AddTorque(transform.forward * turnDir.z * stabalizeForce);
+                rb.AddTorque(transform.forward * turnDir.z * stabalizeForce * rb.mass);
             }
             
             if (stabalizeX)
             {
-                rb.AddTorque(transform.right * turnDir.x * stabalizeForce);
+                rb.AddTorque(transform.right * turnDir.x * stabalizeForce * rb.mass);
             }            
         }
 

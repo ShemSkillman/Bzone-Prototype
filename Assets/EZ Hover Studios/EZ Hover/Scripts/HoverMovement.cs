@@ -14,6 +14,8 @@ namespace EZHover
 
         [Header("Obstacle Avoidance")]
 
+        [SerializeField] private bool enableObstacleAvoidance = true;
+
         [Tooltip("Amount of vertical force applied to rise above oncoming obstacles.")]
         [SerializeField] private float hoverBoost = 30f;
         public float HoverBoost { get { return hoverBoost; } set { hoverBoost = value; } }
@@ -71,7 +73,13 @@ namespace EZHover
             if (drawMoveDirectionLine)
             {
                 Debug.DrawLine(start, start + (moveDir * obstacleDetectionRange), Color.red);
-            }            
+            }
+            
+            if (!enableObstacleAvoidance)
+            {
+                rb.AddForce(moveDir * moveSpeed, ForceMode.Acceleration);
+                return;
+            }
 
             bool isHit = Physics.Raycast(start, moveDir, out RaycastHit hit, obstacleDetectionRange, hoverGrid.HoverableLayers);
 
