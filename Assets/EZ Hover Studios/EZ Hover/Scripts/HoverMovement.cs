@@ -16,6 +16,9 @@ namespace EZHover
 
         [SerializeField] private bool enableObstacleAvoidance = true;
 
+        [SerializeField] LayerMask obstacleLayers = 1;
+        public LayerMask ObstacleLayers { get { return obstacleLayers; } }
+
         [Tooltip("Amount of vertical force applied to rise above oncoming obstacles.")]
         [SerializeField] private float hoverBoost = 30f;
         public float HoverBoost { get { return hoverBoost; } set { hoverBoost = value; } }
@@ -81,7 +84,7 @@ namespace EZHover
                 return;
             }
 
-            bool isHit = Physics.Raycast(start, moveDir, out RaycastHit hit, obstacleDetectionRange, hoverGrid.HoverableLayers);
+            bool isHit = Physics.Raycast(start, moveDir, out RaycastHit hit, obstacleDetectionRange, obstacleLayers);
 
             if (isHit)
             {

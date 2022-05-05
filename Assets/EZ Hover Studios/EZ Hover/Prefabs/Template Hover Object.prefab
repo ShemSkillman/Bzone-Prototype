@@ -156,6 +156,9 @@ MonoBehaviour:
   enableInput: 1
   moveSpeed: 30
   enableObstacleAvoidance: 1
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 257
   hoverBoost: 60
   obstacleDetectionRange: 30
   repulsionSpeed: 60
