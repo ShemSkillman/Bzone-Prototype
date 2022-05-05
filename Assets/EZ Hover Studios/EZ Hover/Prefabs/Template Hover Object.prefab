@@ -134,8 +134,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 257
   gridSize: {x: 2, y: 0.1, z: 2}
-  columnCount: 14
-  rowCount: 18
+  columnCount: 3
+  rowCount: 3
   stabalizeForce: 5
   stabalizeZ: 1
   stabalizeX: 0
