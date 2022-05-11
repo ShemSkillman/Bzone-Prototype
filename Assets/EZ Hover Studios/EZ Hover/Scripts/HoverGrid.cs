@@ -73,10 +73,14 @@ namespace EZHover
 
         private void Update()
         {
+            if (IsPrefab())
+                return;
+
             // Hover points must be regenerated if division count is changed
             if (points == null ||
                 points.GetLength(0) != columnCount ||
                 points.GetLength(1) != rowCount ||
+                points[0, 0] == null ||
                 usedGridSize != gridSize ||
                 points[0,0].HoverableLayers.value != hoverableLayers.value)
             {
@@ -87,6 +91,11 @@ namespace EZHover
             {
                 FindBestHoverPoint();
             }
+        }
+
+        private bool IsPrefab()
+        {
+            return gameObject.scene.path == "";
         }
 
         private void GenerateHoverPoints()
@@ -237,7 +246,7 @@ namespace EZHover
 
         private void RenderGizmos()
         {
-            if (points == null )
+            if (points == null || IsPrefab())
             {
                 return;
             }
