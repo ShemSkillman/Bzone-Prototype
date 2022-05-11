@@ -8,34 +8,42 @@ namespace EZHover
     public class HoverGrid : MonoBehaviour
     {
         [Header("Hover Settings")]
-        [SerializeField] float maxHoverThrust = 30f;
-        public float MaxHoverThrust { get { return maxHoverThrust; } }
+        [SerializeField] private float maxHoverThrust = 30f;
+        public float MaxHoverThrust { get { return maxHoverThrust; } set { maxHoverThrust = value; } }
 
-        [SerializeField] float targetHeight = 4f;
-        public float TargetHeight { get { return targetHeight; } }
+        [SerializeField] private float targetHeight = 4f;
+        public float TargetHeight { get { return targetHeight; } set { targetHeight = value; } }
 
-        [SerializeField] LayerMask hoverableLayers = 1;
-        public LayerMask HoverableLayers { get { return hoverableLayers; } }
+        [SerializeField] private LayerMask hoverableLayers = 1;
+        public LayerMask HoverableLayers { get { return hoverableLayers; } set { hoverableLayers = value; }}
 
         [Header("Grid Settings")]
-        [SerializeField] Vector3 gridSize = new Vector3(10, 0.2f, 10);
+        [SerializeField] private Vector3 gridSize = new Vector3(10, 0.2f, 10);
+        public Vector3 GridSize { get { return gridSize; } set { gridSize = value; } }
 
         [Range(1, 100)]
-        [SerializeField] int columnCount = 3;
+        [SerializeField] private int columnCount = 3;
+        public int ColumnCount { get { return columnCount; } set { columnCount = value; } }
 
         [Range(1, 100)]
-        [SerializeField] int rowCount = 3;
+        [SerializeField] private int rowCount = 3;
+        public int RowCount { get { return rowCount; } set { rowCount = value; } }
 
         [Header("Stabalization")]
 
         [Tooltip("Amount of torque force applied to stabalize the hover object.")]
-        [SerializeField] float stabalizeForce = 10f;
+        [SerializeField] private float stabalizeForce = 10f;
+        public float StabalizeForce { get { return stabalizeForce; } set { stabalizeForce = value; } }
 
-        [SerializeField] bool stabalizeZ = true;
-        [SerializeField] bool stabalizeX = false;
+        [SerializeField] private bool stabalizeZ = true;
+        public bool StabalizeZ { get { return stabalizeZ; } set { stabalizeZ = value; } }
+
+        [SerializeField] private bool stabalizeX = false;
+        public bool StabalizeX { get { return stabalizeX; } set { stabalizeX = value; } }
 
         [Header("Gizmo Settings")]
         [SerializeField] bool alwaysRenderGizmos = false;
+
         [SerializeField] Color gridColour = new Color(0, 1, 1, 0.5f);
 
         HoverPoint bestHoverPoint;

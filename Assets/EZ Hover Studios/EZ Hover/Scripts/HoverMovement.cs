@@ -33,7 +33,6 @@ namespace EZHover
 
         [Header("Gizmo Settings")]
         [SerializeField] bool drawMoveDirectionLine = true;
-        public bool DrawMoveDetectionLine { get { return drawMoveDirectionLine; } set { drawMoveDirectionLine = value; } }
 
         Rigidbody rb;
         HoverGrid hoverGrid;
