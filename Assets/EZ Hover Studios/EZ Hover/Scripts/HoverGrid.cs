@@ -161,6 +161,11 @@ namespace EZHover
                 for (int j = 0; j < points.GetLength(1); j++)
                 {
                     HoverPoint point = points[i, j];
+                    if (point == null )
+                    {
+                        continue;
+                    }
+
                     if (point == bestHoverPoint) continue;
 
                     point.Recalculate(targetHeight, rb);
@@ -232,7 +237,7 @@ namespace EZHover
 
         private void RenderGizmos()
         {
-            if (points == null)
+            if (points == null )
             {
                 return;
             }
@@ -242,6 +247,10 @@ namespace EZHover
                 for (int j = 0; j < points.GetLength(1); j++)
                 {
                     HoverPoint point = points[i, j];
+                    if (point == null)
+                    {
+                        continue;
+                    }
 
                     DrawRaycastLine(point);
                     DrawHitSphere(point);
@@ -253,6 +262,11 @@ namespace EZHover
                 for (int j = 0; j < points.GetLength(1); j++)
                 {
                     HoverPoint point = points[i, j];
+                    if (point == null)
+                    {
+                        continue;
+                    }
+
                     DrawGridSquare(point);
                 }
             }
